@@ -11,13 +11,9 @@ JavaScript. Ten pages — five in German, the same five in Ukrainian.
 | Impressum | `impressum.html` | `impressum-uk.html` |
 | Datenschutz | `datenschutz.html` | `datenschutz-uk.html` |
 
-## Publish
+## Working on the site
 
-The site is already live. The repository is **UkrainischesHaus/website**, GitHub Pages
-deploys `main` from `/ (root)`, and the custom domain is `ukrainischeshaus.de`. There is
-no build step — whatever is on `main` is what visitors get, usually within a minute.
-
-To work on it, clone the repository:
+Clone the repository — it already exists, so there is nothing to initialise:
 
 ```bash
 gh repo clone UkrainischesHaus/website
@@ -25,7 +21,17 @@ gh repo clone UkrainischesHaus/website
 cd website
 ```
 
-Edit, then publish:
+There is no build step and no dependencies to install. To preview your changes, serve
+the folder over HTTP and open <http://localhost:8000>:
+
+```bash
+python3 -m http.server 8000
+```
+
+Use a server rather than opening the `.html` files directly — `file://` breaks the
+root-relative paths in `404.html` and blocks the web fonts.
+
+Then commit and push:
 
 ```bash
 git add -A
@@ -33,22 +39,31 @@ git commit -m "Describe the change"
 git push
 ```
 
-Check the deploy finished with `gh api repos/UkrainischesHaus/website/pages/builds/latest
---jq .status` — it reports `building`, then `built`. If it reports `errored`, the previous
-version stays live.
+Pushing to `main` publishes. Whatever is on `main` is what visitors get, usually within
+a minute. Check the deploy with:
 
-### One-time setup, already done
+```bash
+gh api repos/UkrainischesHaus/website/pages/builds/latest --jq .status
+```
 
-- **Settings → Pages** → Source: *Deploy from a branch*, Branch `main`, Folder `/ (root)`.
-- **Custom domain** `ukrainischeshaus.de` — taken automatically from the `CNAME` file in
-  this folder. Do not delete that file; GitHub uses it to route the domain to this repo,
-  and removing it unsets the custom domain.
-- `.nojekyll` disables Jekyll processing, so files are served exactly as committed.
+It reports `building`, then `built`. If it reports `errored`, the previously published
+version stays live — a bad push takes the site down only if it is valid but wrong.
 
-### Still outstanding
+### Things not to delete
 
-- Tick **Enforce HTTPS** (Settings → Pages) once the certificate is issued. It can only be
-  ticked after the DNS records below resolve, and issuance can take up to an hour.
+- **`CNAME`** — GitHub reads it to route `ukrainischeshaus.de` to this repository.
+  Deleting it unsets the custom domain and the site falls back to
+  `ukrainischeshaus.github.io`.
+- **`.nojekyll`** — disables Jekyll processing so files are served exactly as committed.
+  Without it, anything starting with `_` or `.` stops being served.
+
+### How it is deployed
+
+GitHub Pages, *Deploy from a branch*: `main` at `/ (root)`, configured under the
+repository's Settings → Pages. Custom domain `ukrainischeshaus.de`, HTTPS enforced,
+certificate issued by Let's Encrypt and renewed automatically. Nothing needs to be
+re-done; the settings below are recorded only so they can be rebuilt if the repository
+is ever recreated.
 
 ## DNS at Namecheap
 
@@ -126,8 +141,8 @@ CNAME                     custom domain for GitHub Pages
 .nojekyll                 serve files as-is, no Jekyll processing
 robots.txt  sitemap.xml    indexing
 assets/css/modernist.css  design-system tokens and components
+assets/css/site.css       brand colour overrides and base rules
 assets/fonts/*.woff2      Onest, self-hosted (latin, latin-ext, cyrillic, cyrillic-ext)
-assets/css/site.css        brand colour overrides and base rules
 assets/logo.png  logo-mark.png  favicon.png  apple-touch-icon.png
 assets/photo-stand.jpg     photograph
 assets/og-image.jpg        social share image, 1200×630
