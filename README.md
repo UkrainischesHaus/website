@@ -116,27 +116,31 @@ assets/photo-stand.jpg     photograph
 assets/og-image.jpg        social share image, 1200×630
 ```
 
-## Activate the contact form
+## Contact form
 
 The form on `kontakt.html` / `kontakt-uk.html` posts to **Web3Forms**, which needs no
-server and no account fee for basic use.
+server and no account fee for basic use. The access keys are already set — line 78 of
+each page:
 
-1. Go to https://web3forms.com, enter `ukrainischeshaus.kassel@gmail.com` and confirm
-   the address. You receive an access key.
-2. In both `kontakt.html` and `kontakt-uk.html` replace the placeholder:
+```html
+<input type="hidden" name="access_key" value="...">
+```
 
-   ```html
-   <input type="hidden" name="access_key" value="WEB3FORMS-ACCESS-KEY">
-   ```
-
-   with your real key. Until this is done, submissions fail.
-3. Send a test message from the published page.
+The two pages use **different** keys, which lets you tell German submissions from
+Ukrainian ones. Both must be registered and confirmed against
+`ukrainischeshaus.kassel@gmail.com` at https://web3forms.com; an unconfirmed key fails
+silently, with no error shown to the visitor. Send a test message from each published
+page after a DNS change or a key change.
 
 The form already includes a required GDPR consent checkbox linking to the privacy
 policy, a hidden `botcheck` honeypot field, and `required` on name, email and message.
 Web3Forms shows its own confirmation page after submitting; add
 `<input type="hidden" name="redirect" value="https://ukrainischeshaus.de/index.html">`
 if you would rather return to the site.
+
+Note that the access keys are public — they sit in the page source, which is how
+Web3Forms is designed to work. They identify the destination inbox, they are not
+secrets, and they can be rotated at any time from the Web3Forms dashboard.
 
 ## Before you announce the domain
 
