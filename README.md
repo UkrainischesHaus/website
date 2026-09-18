@@ -71,7 +71,7 @@ CNAME                     custom domain for GitHub Pages
 .nojekyll                 serve files as-is, no Jekyll processing
 robots.txt  sitemap.xml    indexing
 assets/css/modernist.css  design-system tokens and components
-assets/fonts/*.woff2      Archivo, self-hosted (latin + latin-ext)
+assets/fonts/*.woff2      Onest, self-hosted (latin, latin-ext, cyrillic, cyrillic-ext)
 assets/css/site.css        brand colour overrides and base rules
 assets/logo.png  logo-mark.png  favicon.png  apple-touch-icon.png
 assets/photo-stand.jpg     photograph
@@ -113,9 +113,16 @@ if you would rather return to the site.
 
 ## Typography
 
-Archivo is self-hosted from `assets/fonts/` as a variable font (weights 100–900 in one
-file per subset), so the site makes **no third-party requests** when a page loads. Note
-that Archivo has no Cyrillic glyphs — see the open question in the deploy notes.
+The site uses **Onest**, self-hosted from `assets/fonts/` as a variable font — one
+woff2 per subset, each covering weights 100–900. Four subsets are shipped (latin,
+latin-ext, cyrillic, cyrillic-ext, ~88 KB total); browsers download only the ones a
+page actually needs, so a German page never fetches the Cyrillic file.
+
+The site makes **no third-party requests** when a page loads.
+
+Onest replaced Archivo, which has no Cyrillic glyphs at all — the Ukrainian pages were
+silently falling back to the visitor's system font. Every character used anywhere on
+the site is verified to be inside one of the four shipped subsets.
 
 ## Optional improvements
 
