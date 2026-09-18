@@ -95,9 +95,26 @@ The apex should return the four `185.199.*` addresses and `www` should return
 `ukrainischeshaus.github.io.` — GitHub then redirects `www` to the apex on its own, since
 the `CNAME` file names the apex.
 
-Once that resolves, verify the domain in GitHub (organisation Settings → Pages →
-*Verify domain*) to prevent takeovers; that adds a `_github-pages-challenge-UkrainischesHaus`
-TXT record you also enter at Namecheap.
+### Verify the domain
+
+Verifying stops anyone else claiming `ukrainischeshaus.de` on GitHub Pages if this repo is
+ever deleted or renamed. Go to
+<https://github.com/organizations/UkrainischesHaus/settings/pages> → **Add a domain**,
+enter `ukrainischeshaus.de`, and GitHub shows a one-off token. It is generated per
+organisation and domain, so it cannot be looked up anywhere else.
+
+Add it at Namecheap as a **TXT Record**:
+
+```
+TXT   _github-pages-challenge-ukrainischeshaus   <token from GitHub>
+```
+
+GitHub displays the full record name, `_github-pages-challenge-ukrainischeshaus.ukrainischeshaus.de`.
+Namecheap's *Host* field is relative to the domain, so enter only the part before it —
+pasting the full name creates the record one level too deep and verification fails.
+
+Check it with `dig +short TXT _github-pages-challenge-ukrainischeshaus.ukrainischeshaus.de`,
+then click **Verify** in GitHub.
 
 ## Files
 
