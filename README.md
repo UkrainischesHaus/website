@@ -13,15 +13,15 @@ JavaScript. Ten pages — five in German, the same five in Ukrainian.
 
 ## Publish
 
-1. Create a repository (e.g. `uhku/website`) and push the **contents of this folder**
-   to the repository root on branch `main`:
+1. The repository is **UkrainischesHaus/website**, deploying `main` at `/ (root)`.
+   It was created from the contents of this folder:
 
    ```bash
    git init
    git add .
    git commit -m "Website ukrainischeshaus.de"
    git branch -M main
-   git remote add origin git@github.com:<org>/<repo>.git
+   git remote add origin git@github.com:UkrainischesHaus/website.git
    git push -u origin main
    ```
 
@@ -54,12 +54,12 @@ AAAA  @   2606:50c0:8003::153
 And one **CNAME** for the `www` subdomain:
 
 ```
-CNAME www  <org>.github.io.
+CNAME www  ukrainischeshaus.github.io.
 ```
 
 Delete any existing A/AAAA/ALIAS records on `@` first. Propagation is usually minutes,
-occasionally a few hours. Verify the domain in GitHub (Settings → Pages → *Verify domain*)
-to prevent takeovers.
+occasionally a few hours. Verify the domain in GitHub (organisation Settings → Pages → *Verify domain*)
+to prevent takeovers; that adds a `_github-pages-challenge-UkrainischesHaus` TXT record.
 
 ## Files
 
