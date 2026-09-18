@@ -71,6 +71,7 @@ CNAME                     custom domain for GitHub Pages
 .nojekyll                 serve files as-is, no Jekyll processing
 robots.txt  sitemap.xml    indexing
 assets/css/modernist.css  design-system tokens and components
+assets/fonts/*.woff2      Archivo, self-hosted (latin + latin-ext)
 assets/css/site.css        brand colour overrides and base rules
 assets/logo.png  logo-mark.png  favicon.png  apple-touch-icon.png
 assets/photo-stand.jpg     photograph
@@ -106,17 +107,18 @@ if you would rather return to the site.
   (§ 5 DDG, § 18 MStV, GDPR Art. 13) with the association's real data, but they are a
   careful draft, not legal advice. In particular check the responsible person named
   under § 18 Abs. 2 MStV and the supervisory authority address.
-- The privacy policy states that Archivo is loaded from Google Fonts. If you
-  self-host the font (see below), delete section 03 of both privacy pages.
 - Both legal pages carry `<meta name="robots" content="noindex, follow">` — standard
   practice, they are reachable from every footer but not indexed.
 - `angebote.html` still has no concrete times or rooms.
 
+## Typography
+
+Archivo is self-hosted from `assets/fonts/` as a variable font (weights 100–900 in one
+file per subset), so the site makes **no third-party requests** when a page loads. Note
+that Archivo has no Cyrillic glyphs — see the open question in the deploy notes.
+
 ## Optional improvements
 
-- **Self-host Archivo.** `assets/css/modernist.css` imports it from Google Fonts. Download
-  the woff2 files, put them in `assets/fonts/`, replace the `@import` with `@font-face`
-  rules. Faster and avoids a GDPR question entirely.
 - **Clean URLs.** Move each page into its own folder (`angebote/index.html`) so the
   address reads `ukrainischeshaus.de/angebote`. Update the internal links accordingly.
 - **Photograph sizes.** Export 800px and 1600px versions and add `srcset` for mobile
