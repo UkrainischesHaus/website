@@ -13,31 +13,56 @@ JavaScript. Ten pages — five in German, the same five in Ukrainian.
 
 ## Publish
 
-1. The repository is **UkrainischesHaus/website**, deploying `main` at `/ (root)`.
-   It was created from the contents of this folder:
+The site is already live. The repository is **UkrainischesHaus/website**, GitHub Pages
+deploys `main` from `/ (root)`, and the custom domain is `ukrainischeshaus.de`. There is
+no build step — whatever is on `main` is what visitors get, usually within a minute.
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Website ukrainischeshaus.de"
-   git branch -M main
-   git remote add origin git@github.com:UkrainischesHaus/website.git
-   git push -u origin main
-   ```
+To work on it, clone the repository:
 
-2. Repository → **Settings → Pages** → Source: *Deploy from a branch*,
-   Branch: `main`, Folder: `/ (root)`. Save.
+```bash
+gh repo clone UkrainischesHaus/website
+# or: git clone https://github.com/UkrainischesHaus/website.git
+cd website
+```
 
-3. Same page, **Custom domain**: enter `ukrainischeshaus.de` and save. The `CNAME`
-   file in this folder already contains that value, so this step should already be
-   filled in after the first deploy.
+Edit, then publish:
 
-4. Tick **Enforce HTTPS** once the certificate is issued (can take up to an hour).
+```bash
+git add -A
+git commit -m "Describe the change"
+git push
+```
 
-## DNS at your domain registrar
+Check the deploy finished with `gh api repos/UkrainischesHaus/website/pages/builds/latest
+--jq .status` — it reports `building`, then `built`. If it reports `errored`, the previous
+version stays live.
 
-For the apex domain `ukrainischeshaus.de` create four **A** records (and, if IPv6 is
-offered, the four **AAAA** records) pointing at GitHub Pages:
+### One-time setup, already done
+
+- **Settings → Pages** → Source: *Deploy from a branch*, Branch `main`, Folder `/ (root)`.
+- **Custom domain** `ukrainischeshaus.de` — taken automatically from the `CNAME` file in
+  this folder. Do not delete that file; GitHub uses it to route the domain to this repo,
+  and removing it unsets the custom domain.
+- `.nojekyll` disables Jekyll processing, so files are served exactly as committed.
+
+### Still outstanding
+
+- Tick **Enforce HTTPS** (Settings → Pages) once the certificate is issued. It can only be
+  ticked after the DNS records below resolve, and issuance can take up to an hour.
+
+## DNS at Namecheap
+
+The domain is registered with **Namecheap** and uses Namecheap BasicDNS. Records are
+edited under Domain List → `ukrainischeshaus.de` → **Manage** → **Advanced DNS**, in the
+*Host Records* table. Leave the nameservers on the *Domain* tab set to Namecheap BasicDNS.
+
+Delete the two rows Namecheap creates by default first, or they will conflict:
+
+- `CNAME Record` · Host `www` · Value `parkingpage.namecheap.com.`
+- `URL Redirect Record` · Host `@`
+
+Then add nine records. Four **A** records point the apex at GitHub Pages, and the four
+**AAAA** records do the same over IPv6:
 
 ```
 A     @   185.199.108.153
@@ -57,9 +82,22 @@ And one **CNAME** for the `www` subdomain:
 CNAME www  ukrainischeshaus.github.io.
 ```
 
-Delete any existing A/AAAA/ALIAS records on `@` first. Propagation is usually minutes,
-occasionally a few hours. Verify the domain in GitHub (organisation Settings → Pages → *Verify domain*)
-to prevent takeovers; that adds a `_github-pages-challenge-UkrainischesHaus` TXT record.
+Click the green check on each row, then **Save All Changes**. Leave TTL on *Automatic*.
+
+Propagation is usually minutes, occasionally a few hours. Check it with:
+
+```bash
+dig +short ukrainischeshaus.de A
+dig +short www.ukrainischeshaus.de
+```
+
+The apex should return the four `185.199.*` addresses and `www` should return
+`ukrainischeshaus.github.io.` — GitHub then redirects `www` to the apex on its own, since
+the `CNAME` file names the apex.
+
+Once that resolves, verify the domain in GitHub (organisation Settings → Pages →
+*Verify domain*) to prevent takeovers; that adds a `_github-pages-challenge-UkrainischesHaus`
+TXT record you also enter at Namecheap.
 
 ## Files
 
