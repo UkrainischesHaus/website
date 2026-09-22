@@ -10,7 +10,6 @@ JavaScript. Ten pages — five in German, the same five in Ukrainian.
 | Kontakt | `kontakt.html` | `kontakt-uk.html` |
 | Impressum | `impressum.html` | `impressum-uk.html` |
 | Datenschutz | `datenschutz.html` | `datenschutz-uk.html` |
-| Satzung & Ordnungen | `satzung.html` | `satzung-uk.html` |
 
 ## Working on the site
 
